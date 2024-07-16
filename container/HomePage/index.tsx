@@ -3,15 +3,16 @@
 
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { QueryBuilderMaterial } from "@react-querybuilder/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { RuleGroupType } from "react-querybuilder";
-import { QueryBuilder } from "react-querybuilder";
+import { formatQuery, QueryBuilder } from "react-querybuilder";
 
-import { useUsers } from "@/query";
+import { useUsers } from "@/api/user";
 
 import { fields } from "./fields";
 
@@ -19,8 +20,19 @@ const initialQuery: RuleGroupType = { combinator: "and", rules: [] };
 
 export default function HomePage() {
   const [query, setQuery] = useState(initialQuery);
+  const [formattedQuery, setFormattedQuery] = useState("");
 
-  const { data: users, isLoading } = useUsers();
+  const { data: users, isLoading, isFetching } = useUsers(formattedQuery);
+
+  function handleApply() {
+    const formatted = formatQuery(query, "mongodb");
+    setFormattedQuery(formatted);
+  }
+
+  function handleClear() {
+    setQuery(initialQuery);
+    setFormattedQuery("");
+  }
 
   const columns: GridColDef[] = [
     {
@@ -118,12 +130,23 @@ export default function HomePage() {
         </QueryBuilderMaterial>
       </Box>
 
-      <Card className="border border-secondary rounded-2xl mt-8 flex flex-col bg-lightgrey">
+      <Box className="w-full flex justify-end mt-4 gap-4">
+        <Button onClick={() => handleClear()}>Clear Filter</Button>
+        <Button
+          onClick={() => handleApply()}
+          className="bg-blue-600 text-white"
+        >
+          Apply Fiter
+        </Button>
+      </Box>
+
+      <Card className="border border-secondary rounded-2xl mt-4 flex flex-col bg-lightgrey">
         <DataGrid
           rows={users || []}
           columns={columns}
           sx={{
             border: "none",
+            minHeight: 200,
             ".MuiDataGrid-virtualScroller": {
               overflow: "hidden !important",
               minHeight: 100,
@@ -144,7 +167,7 @@ export default function HomePage() {
           disableRowSelectionOnClick
           hideFooter={true}
           rowHeight={61}
-          loading={isLoading}
+          loading={isLoading || isFetching}
           disableColumnFilter
           disableColumnMenu
           disableColumnSorting

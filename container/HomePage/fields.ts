@@ -1,8 +1,6 @@
 import type { Field, RuleType } from "react-querybuilder";
 import { defaultOperators, toFullOption } from "react-querybuilder";
 
-import { musicalInstruments } from "./musicalInstruments";
-
 export const validator = (r: RuleType) => !!r.value;
 
 export const fields = (
@@ -34,7 +32,13 @@ export const fields = (
       defaultOperator: "beginsWith",
       validator,
     },
-    { name: "age", label: "Enter Age", inputType: "number", validator },
+    {
+      name: "age",
+      label: "Age",
+      placeholder: "Enter age",
+      inputType: "number",
+      validator,
+    },
     {
       name: "city",
       label: "City",

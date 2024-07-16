@@ -1,11 +1,19 @@
-import { QueryClient } from "react-query";
+"use client";
+
+import {
+  QueryClientProvider as Provider,
+  QueryClient,
+} from "@tanstack/react-query";
+import { PropsWithChildren } from "react";
 import { StatusCode } from "status-code-enum";
 
 const MAX_RETRIES = 2;
+const STALE_TIME = 0;
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      staleTime: STALE_TIME,
       refetchOnWindowFocus: false,
       retry(failureCount: number, err: any) {
         return (
@@ -17,4 +25,6 @@ const queryClient = new QueryClient({
   },
 });
 
-export default queryClient;
+export default function QueryClientProvider({ children }: PropsWithChildren) {
+  return <Provider client={queryClient}>{children}</Provider>;
+}
