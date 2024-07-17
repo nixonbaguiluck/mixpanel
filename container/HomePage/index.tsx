@@ -158,10 +158,13 @@ export default function HomePage() {
             ".MuiDataGrid-row": {
               paddingX: "10px",
             },
-            ".css-yrdy0g-MuiDataGrid-columnHeaderRow": {
+            ".MuiDataGrid-columnHeaders": {
               background: "#E9E9E9 !important",
               paddingX: "10px",
               color: "#626266",
+            },
+            ".MuiDataGrid-columnHeader": {
+              background: "#E9E9E9 !important",
             },
           }}
           disableRowSelectionOnClick
