@@ -8,6 +8,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { QueryBuilderMaterial } from "@react-querybuilder/material";
+import moment from "moment";
 import { useState } from "react";
 import type { RuleGroupType } from "react-querybuilder";
 import { formatQuery, QueryBuilder } from "react-querybuilder";
@@ -73,7 +74,9 @@ export default function HomePage() {
       flex: 0.4,
       headerName: "BirthDate",
       renderCell: (params) => (
-        <Typography variant="body2">{params?.row.birthDate}</Typography>
+        <Typography variant="body2">
+          {moment(params?.row.birthDate).format("ll")}
+        </Typography>
       ),
     },
     {
