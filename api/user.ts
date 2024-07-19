@@ -5,13 +5,6 @@ import { User } from "@/types/User";
 
 const baseURL = `${process.env.NEXT_PUBLIC_BASE_API_URL}/users`;
 
-const user = axios.create({ baseURL });
-
-export async function getUserData() {
-  const { data } = await user.get<{ users: User[] }>("");
-  return data.users;
-}
-
 // == Get all users == //
 export async function requestUsers(query: any) {
   const baseParams = `?query=${query}`;
